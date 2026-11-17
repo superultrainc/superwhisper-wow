@@ -68,9 +68,16 @@ One press of the shortcut → one chat message, to one client. No macros, no seq
 5. Installer + README.
 6. Later: Windows, Retail/Classic `.toc`s, CurseForge/Wago.
 
+## Facts from goose (2026-11-17)
+
+- WoW Forever: `~/Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_forever_` (plain Wine prefix, no Lutris/Steam).
+- On goose: `superwhisper`, `codex` 0.169.0, `hyprctl`, `wtype`, `wl-copy`, `flk`. No `ydotool`.
+- Superwhisper CLI: `record|start|stop`, `cancel`, `status`, `transcribe FILE [--insert]`. `status` JSON exposes `last.text`, `last.delivery`, `last.route` (fcitx5) and the shortcuts (hold `RightAlt`).
+- Start Codex there with `flk new goose <folder> "<task>" codex` or `rex -S goose run --focus=false -- …`.
+
 ## Open facts to verify on goose
 
-- WoW Forever install path, interface version, Wine/Proton runner.
-- Whether `superwhisper record` can return the transcript without pasting (decides if zero-change works).
+- WoW Forever interface version (`.toc`).
+- Whether `start`/`stop` can skip pasting so the companion owns delivery (else `transcribe FILE` without `--insert`); decides if zero-change works.
 - Paste into WoW's edit box over XWayland (Ctrl+V) and whether a pasted `/p ` switches the header.
 - Whether Right Alt reaching WoW as Alt causes side effects.
