@@ -87,3 +87,12 @@ One press of the shortcut → one chat message, to one client. No macros, no seq
 Observe Superwhisper's configured hold shortcut. Use a WoW mode with Wow.exe activation and Auto paste Off. Correlate the hold with a new completed recording, then paste the original spoken text into the same client. The installed addon handles channel routing. Preserve the clipboard and cancel on focus loss. Ship a standalone Windows executable, per-user login startup and a one-time WoW vocabulary import. Live roster sync remains Linux-only.
 
 Build and exercise the Windows companion on a hosted Windows runner with a fake foreground client and synthetic metadata. Real Windows Superwhisper and game testing belong to stage 2.
+
+## Windows stage 2 (paused 2026-11-18)
+
+Real test with Superwhisper Windows and WoW Forever. Paused by Neil after stage 1. To resume:
+
+- Azure GPU quota: 12 vCPUs of "Standard NVADSA10v5 Family" in East US for `sw-win-x64-gpu` (`Standard_NV12ads_A10_v5`, `sw-testlab`, see superwhisper-tauri-fleet).
+- A separate Battle.net test account with Forever game time, no authenticator, credentials in 1Password.
+- `az login` on the machine that provisions. Device-code login from a non-interactive agent shell failed twice with AADSTS70016 on Azure CLI 2.93.0; run it from an interactive terminal.
+- Budget agreed: $40 of Azure GPU time, VM deallocated after every session.
