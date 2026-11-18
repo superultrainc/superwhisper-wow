@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="SWW_LISTEN" header="SUPERWHISPERWOW">
+        SuperwhisperWoW_Listen()
+    </Binding>
+</Bindings>

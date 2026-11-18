@@ -85,9 +85,11 @@ def focused():
     return None
 
 
-def key(target, name, control=False):
+def key(target, name, control=False, shift=False):
     address, pid = target
     edges = [(name, "down"), (name, "up")]
+    if shift:
+        edges = [("Shift_L", "down"), *edges, ("Shift_L", "up")]
     if control:
         # Wine tracks the modifier key edges for a paste into its XWayland window.
         edges = [("Control_L", "down"), *edges, ("Control_L", "up")]
@@ -167,7 +169,7 @@ class Companion:
         capture.append("--format=s16le")
         self.wav.unlink(missing_ok=True)
         self.recorder = subprocess.Popen([*capture, str(self.wav)])
-        if not key(self.target, "Return"):
+        if not key(self.target, "F12", control=True, shift=True):
             self.stop_capture()
 
     def release(self):
