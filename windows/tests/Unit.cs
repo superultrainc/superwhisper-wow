@@ -14,6 +14,9 @@ namespace SuperwhisperWoW {
             Check(hold.Matches(165,4) && !hold.Matches(164,4),"side");
             Check(Shortcut.Parse("Control+Space").Matches(32,1),"combined");
             Check(!Shortcut.Parse("Control+Space").Matches(32,3),"extra modifier");
+            Check(Shortcut.Parse("ShiftLeft").MatchesInjected(16,0),"synthetic Shift triggers left Shift");
+            Check(!Shortcut.Parse("ControlRight").MatchesInjected(17,0),"synthetic Control leaves right Control alone");
+            Check(Shortcut.Parse("Control+ShiftLeft").MatchesInjected(16,1),"modifier chord collision");
             Check(Shortcut.Parse("Bogus")==null,"unknown shortcut");
             Check(Desktop.GameName(@"C:\Games\WOW.exe") && !Desktop.GameName(@"C:\Wow.exe\Other.exe"),"foreground executable");
             string root=Path.Combine(Path.GetTempPath(),Guid.NewGuid().ToString());
