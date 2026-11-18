@@ -7,7 +7,7 @@ Agreed with Neil in a grill session, 2026-11-17.
 - Dictate World of Warcraft chat by voice. Chat only: no voice commands, keybind actions or accessibility automation.
 - **WoW Forever first**, then Retail and the Classic flavours (mostly a `.toc` interface bump).
 - **Omarchy Linux (Hyprland) first**, Windows later.
-- Self-contained repo `superwhisper-wow`. The installed **Superwhisper Linux** is the core: recording, transcription, vocabulary, pill.
+- Self-contained **public** repo `superultrainc/superwhisper-wow` (Ryan Hughes from the Omarchy core team may contribute). The installed **Superwhisper Linux** is the core: recording, transcription, vocabulary, pill.
 - **Zero changes to superwhisper-linux.** If a hook there turns out to be required, stop and ask Neil before opening any PR in that repo.
 
 ## ToS line
@@ -54,14 +54,14 @@ One press of the shortcut → one chat message, to one client. No macros, no seq
 
 ## Process
 
-1. **Mocks first.** One page via `flk share`: Listening chat box (2–3 styles), channel headers, Superwhisper pill shown vs hidden over WoW, `/sww` output. Neil approves every visual element before code.
-2. **Build:** Codex `gpt-6.2-astra` (`codex exec -m gpt-6.2-astra`) on **goose**, in a rex session under `systemd-inhibit`, with a log. Goose sleeps when closed; work is split into resumable milestones.
+1. **Mocks first** (`mocks/superwhisper-wow-mocks.html`). **Approved 2026-11-18:** Listening style A (native box, pulsing mic + "Listening…"), Superwhisper pill hidden while WoW is focused, WoW's own channel headers, `/sww` output in system yellow. Any new visual element gets a mock and Neil's approval first.
+2. **Build:** Codex `gpt-6.2-astra` (`codex exec -m gpt-6.2-astra`) on **goose**, in a rex session under `systemd-inhibit`, with a log. Long runs on goose are OK while it's docked; it can still sleep, so milestones stay resumable.
 3. In-game checks on goose are announced first and never steal focus.
 4. One branch + PR per milestone, default reviewer `austensutherland`. Runs autonomously; Neil is asked only for visuals, merges and anything public.
 
 ## Milestones
 
-1. Mock page → approval.
+1. ~~Mock page → approval.~~ Done.
 2. Companion skeleton: focus detection, push-to-talk takeover, `superwhisper record` → paste → Enter into WoW chat on goose (prove zero-change integration).
 3. Addon: Key Binding, Listening state, channel routing.
 4. Vocabulary: core word list, focus-scoped load/unload, `/sww sync` + SavedVariables watcher.
