@@ -11,3 +11,30 @@ jobs:
       - name: Build and test the Windows companion
         shell: powershell
         run: ./windows/tests/unit.ps1
+      - name: Exercise the packaged executable against a foreground Wow.exe
+        shell: powershell
+        run: ./windows/tests/desktop.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-desktop-proof
+          path: windows/dist/proof/windows-chat.png
+          if-no-files-found: error
+      - name: Package and verify install, login entry and uninstall
+        shell: powershell
+        run: |
+          ./windows/package.ps1
+          $game = Join-Path $env:RUNNER_TEMP 'fixture game'
+          New-Item -Type Directory $game | Out-Null
+          Copy-Item windows/dist/Wow.exe "$game/Wow.exe"
+          ./windows/dist/package/install.ps1 -WowDirectory $game
+          Start-Sleep -Seconds 1
+          $exe = "$env:LOCALAPPDATA\SuperwhisperWoW\SuperwhisperWoW.exe"
+          $run = Get-ItemPropertyValue 'HKCU:/Software/Microsoft/Windows/CurrentVersion/Run' SuperwhisperWoW
+          if ($run -ne ('"' + $exe + '"') -or !(Test-Path "$game/Interface/AddOns/SuperwhisperWoW/Routes.lua")) { throw 'Incomplete installation' }
+          ./windows/dist/package/uninstall.ps1
+          if ((Test-Path $exe) -or (Test-Path "$game/Interface/AddOns/SuperwhisperWoW") -or ((Get-Item 'HKCU:/Software/Microsoft/Windows/CurrentVersion/Run').GetValueNames() -contains 'SuperwhisperWoW')) { throw 'Incomplete uninstall' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SuperwhisperWoW-windows-x64
+          path: windows/dist/package/
+          if-no-files-found: error

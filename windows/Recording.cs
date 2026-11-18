@@ -73,7 +73,7 @@ namespace SuperwhisperWoW {
                 else if (trigger == 0) trigger = (int)key;
                 else return null;
             }
-            return new Shortcut { Key = trigger == 0 ? lastMod : trigger, Mods = trigger == 0 ? 0 : mask };
+            return new Shortcut { Key = trigger == 0 ? lastMod : trigger, Mods = trigger == 0 ? mask & ~Modifier(lastMod) : mask };
         }
 
         internal bool MatchesKey(int vk) {
@@ -82,6 +82,12 @@ namespace SuperwhisperWoW {
 
         internal bool Matches(int vk, int mask) {
             return MatchesKey(vk) && (mask & ~Modifier(vk)) == Mods;
+        }
+        internal bool MatchesInjected(int vk, int mask) {
+            // SendInput emits left-hand edges for unqualified Shift and Control.
+            if (vk == (int)Keys.ShiftKey) vk = (int)Keys.LShiftKey;
+            if (vk == (int)Keys.ControlKey) vk = (int)Keys.LControlKey;
+            return Matches(vk, mask);
         }
         internal static Shortcut ReadHold(Dictionary<string,object> prefs) {
             object enabled;
