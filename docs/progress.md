@@ -15,3 +15,7 @@ Verified the addon's core terms in the installed Superwhisper vocabulary. After 
 ## Milestone 5
 
 The installer copied the addon and companion into the local Forever installation. Compared installed files with the checkout and used the installed copies for the in-game checks. A temporary prefix also passed the installer smoke test.
+
+## Windows stage 1
+
+Source inspection confirmed that Windows saves recordings under Unix-second folders on release, writes modeName and the final results to meta.json, and writes the transcript to the clipboard even with Auto paste disabled. Capture the clipboard before recording and verify the completion belongs to the WoW mode. The companion never edits Superwhisper's configuration.

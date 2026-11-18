@@ -81,3 +81,9 @@ One press of the shortcut → one chat message, to one client. No macros, no seq
 - Whether `start`/`stop` can skip pasting so the companion owns delivery (else `transcribe FILE` without `--insert`); decides if zero-change works.
 - Paste into WoW's edit box over XWayland (Ctrl+V) and whether a pasted `/p ` switches the header.
 - Whether Right Alt reaching WoW as Alt causes side effects.
+
+## Windows stage 1
+
+Observe Superwhisper's configured hold shortcut. Use a WoW mode with Wow.exe activation and Auto paste Off. Correlate the hold with a new completed recording, then paste the original spoken text into the same client. The installed addon handles channel routing. Preserve the clipboard and cancel on focus loss. Ship a standalone Windows executable, per-user login startup and a one-time WoW vocabulary import. Live roster sync remains Linux-only.
+
+Build and exercise the Windows companion on a hosted Windows runner with a fake foreground client and synthetic metadata. Real Windows Superwhisper and game testing belong to stage 2.

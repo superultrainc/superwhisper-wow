@@ -72,12 +72,15 @@ events:RegisterEvent("PLAYER_ENTERING_WORLD")
 events:RegisterEvent("PLAYER_REGEN_ENABLED")
 events:SetScript("OnEvent", function(self)
     if InCombatLockdown() then return end
-    local chord = "CTRL-SHIFT-F12"
-    local action = GetBindingAction(chord)
-    -- Account bindings can reload after login. Keep the companion chord session-local.
-    if not action or action == "" then
-        SetOverrideBinding(self, false, chord, "SWW_LISTEN")
-    else
-        ClearOverrideBindings(self)
+    ClearOverrideBindings(self)
+    local function bindIfFree(chord)
+        local action = GetBindingAction(chord)
+        if not action or action == "" then
+            SetOverrideBinding(self, false, chord, "SWW_LISTEN")
+        end
+    end
+    bindIfFree("CTRL-SHIFT-F12")
+    if IsWindowsClient and IsWindowsClient() then
+        bindIfFree("ALT-CTRL-SHIFT-F12")
     end
 end)
