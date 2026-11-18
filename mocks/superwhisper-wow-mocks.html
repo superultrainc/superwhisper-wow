@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Superwhisper WoW Mocks</title>
+<style>
+:root{
+  --bg:#0e0f12;--panel:#17191e;--text:#e8e6e1;--muted:#8d8f96;--accent:#3b82f6;--line:#2a2d34;
+  --wow-chat-bg:rgba(0,0,0,.42);--wow-edit-bg:rgba(0,0,0,.72);--wow-gold:#ffd100;--wow-sys:#ffff00;
+  --party:#aaaaff;--raid:#ff7f00;--rw:#ff4800;--guild:#40ff40;--officer:#40c040;--say:#ffffff;--yell:#ff4040;--whisper:#ff80ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,system-ui,"Segoe UI",sans-serif;padding:24px 16px 64px}
+main{max-width:1040px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:36px 0 6px}
+p.note{color:var(--muted);margin:0 0 12px;max-width:760px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:var(--panel);color:var(--text);border:0;padding:6px 12px;font:inherit;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.rec{color:var(--accent);font-weight:600}
+
+/* Fake game scene: abstract, no game art */
+.scene{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(120% 80% at 70% 20%,#4a6b7a 0%,#2b3d36 40%,#1a2219 70%,#0f130e 100%)}
+.scene::after{content:"game world";position:absolute;right:16px;top:12px;color:rgba(255,255,255,.25);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.actionbar{position:absolute;left:58%;bottom:2.5%;transform:translateX(-50%);display:flex;gap:3px}
+.actionbar i{width:clamp(18px,3.4vw,36px);aspect-ratio:1;background:#222;border:1px solid #555;border-radius:3px;opacity:.8}
+
+/* Chat frame */
+.chat{position:absolute;left:1.5%;bottom:6%;width:min(42%,420px);font:600 clamp(10px,1.35vw,13px)/1.35 "Friz Quadrata","Trebuchet MS",Georgia,serif;text-shadow:1px 1px 0 #000}
+.chat .lines{background:var(--wow-chat-bg);padding:6px 8px;border-radius:2px}
+.chat .lines div{margin:1px 0}
+.edit{margin-top:4px;display:flex;align-items:center;gap:6px;background:var(--wow-edit-bg);border:1px solid #6b5a2e;border-radius:3px;padding:4px 8px;min-height:1.9em;transition:opacity .2s cubic-bezier(.215,.61,.355,1)}
+.edit.hidden{opacity:0}
+.hdr{white-space:nowrap}
+.caret{display:inline-block;width:1px;height:1.1em;background:#fff;animation:blink 1s steps(1) infinite;vertical-align:middle}
+@keyframes blink{50%{opacity:0}}
+.mic{width:.85em;height:1.1em;flex:none}
+.pulse{animation:pulse 1.2s cubic-bezier(.215,.61,.355,1) infinite}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.bars{display:inline-flex;align-items:center;gap:2px;height:1.1em;min-width:22px}
+.bars span{width:2px;border-radius:1px;background:currentColor;animation:bar .9s ease-in-out infinite}
+.bars span:nth-child(2){animation-delay:.12s}.bars span:nth-child(3){animation-delay:.24s}
+.bars span:nth-child(4){animation-delay:.36s}.bars span:nth-child(5){animation-delay:.48s}.bars span:nth-child(6){animation-delay:.6s}
+@keyframes bar{0%,100%{height:35%}50%{height:100%}}
+.tip{position:absolute;bottom:calc(100% + 6px);left:0;background:rgba(10,10,20,.92);border:1px solid #888;border-radius:4px;padding:3px 8px;display:flex;gap:6px;align-items:center;color:#fff}
+.dim{color:#9a9a9a}
+
+/* Superwhisper Linux Mini pill: 60x32, six bars */
+.pill{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);width:60px;height:32px;border-radius:16px;background:#1e1e2e;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;gap:2px;color:#e8e6e1;transition:opacity .2s cubic-bezier(.215,.61,.355,1)}
+.pill span{width:2px;border-radius:1px;background:currentColor;animation:bar .9s ease-in-out infinite;max-height:18px;height:18px}
+.pill span:nth-child(2){animation-delay:.1s}.pill span:nth-child(3){animation-delay:.2s}.pill span:nth-child(4){animation-delay:.3s}.pill span:nth-child(5){animation-delay:.4s}.pill span:nth-child(6){animation-delay:.5s}
+.pill.off{opacity:0}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.card h3{margin:0 0 8px;font-size:13px}
+.card .chat{position:static;width:100%}
+.mini{background:radial-gradient(120% 120% at 70% 0%,#3d5a66,#1a2219);border-radius:6px;padding:10px}
+.pick{font-size:12px;color:var(--muted);margin-top:8px}
+.pick b{color:var(--accent)}
+table{border-collapse:collapse;font-size:13px}
+td{padding:2px 12px 2px 0}
+@media (max-width:600px){.chat{width:70%}}
+</style>
+</head>
+<body>
+<main>
+<h1>Superwhisper for WoW: visual mocks</h1>
+<p class="note">Every visual element, for approval before code. The game scene is a placeholder, not game art. Blue = my default pick. Approve or swap each section by letter.</p>
+
+<h2>1 · Full flow</h2>
+<p class="note">Hold the Superwhisper key in WoW → the chat box opens listening → release → the message is sent. Switch styles below to preview them in place.</p>
+<div class="controls">
+  <div class="seg" id="state">
+    <button data-v="idle">Idle</button><button data-v="listen" aria-pressed="true">Holding key</button><button data-v="sent">Released (sent)</button>
+  </div>
+  <div class="seg" id="style">
+    <button data-v="A" aria-pressed="true">Style A</button><button data-v="B">Style B</button><button data-v="C">Style C</button>
+  </div>
+  <div class="seg" id="pillt">
+    <button data-v="hide" aria-pressed="true">Pill hidden in WoW</button><button data-v="show">Pill shown</button>
+  </div>
+  <div class="seg" id="chan">
+    <button data-v="none" aria-pressed="true">no channel</button><button data-v="party">"party …"</button><button data-v="raid">"raid …"</button><button data-v="whisper">"whisper Thrall …"</button>
+  </div>
+</div>
+<div class="scene" id="scene">
+  <div class="chat" id="chat">
+    <div class="lines" id="lines">
+      <div style="color:var(--guild)">[Guild] [Brenna]: anyone up for Deadmines?</div>
+      <div style="color:var(--party)">[Party] [Korvash]: ready when you are</div>
+      <div style="color:var(--say)">[Ozzie] says: hello there</div>
+    </div>
+    <div class="edit" id="edit"></div>
+  </div>
+  <div class="pill off" id="pill"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="actionbar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+
+<h2>2 · Listening chat box: three styles</h2>
+<div class="grid" id="styles"></div>
+
+<h2>3 · Channel headers (spoken first word)</h2>
+<p class="note">Uses WoW's own slash commands, so the header and colour are the game's. Shown here in the Listening state after the channel word is recognised. Note: the channel is only known after release, so while you're holding the key the header shows the last-used channel.</p>
+<div class="card"><div class="mini"><div class="chat" id="hdrs"></div></div></div>
+
+<h2>4 · <code>/sww</code> output</h2>
+<p class="note">System-message yellow, like the game's own command output. Only <code>/sww sync</code> and <code>/sww</code> (help).</p>
+<div class="grid">
+  <div class="card"><h3>/sww</h3><div class="mini"><div class="chat"><div class="lines" style="color:var(--wow-sys)">
+    <div>Superwhisper: hold your Superwhisper key to dictate.</div>
+    <div>Superwhisper: say "party", "raid", "guild", "whisper Name"… first to pick a channel.</div>
+    <div>Superwhisper: /sww sync – learn names from guild, friends and group.</div>
+  </div></div></div></div>
+  <div class="card"><h3>/sww sync</h3><div class="mini"><div class="chat"><div class="lines" style="color:var(--wow-sys)">
+    <div>Superwhisper: found 143 names (guild 98, friends 21, group 4, whispers 20).</div>
+    <div>Superwhisper: reloading UI to save them…</div>
+  </div></div></div>
+  <p class="pick">After the reload, the companion picks them up on its own. No message on success; a desktop notification only if something fails.</p></div>
+</div>
+
+<h2>Defaults I'm proposing</h2>
+<table>
+<tr><td>Listening style</td><td class="rec">A: native box, pulsing mic + "Listening…"</td></tr>
+<tr><td>Superwhisper pill over WoW</td><td class="rec">Hidden (the in-game box replaces it)</td></tr>
+<tr><td>Channel header</td><td class="rec">WoW's own, set after release</td></tr>
+<tr><td>/sww output</td><td class="rec">As shown, system yellow</td></tr>
+</table>
+</main>
+
+<script>
+const MIC='<svg class="mic" viewBox="0 0 12 16" fill="currentColor"><rect x="3.5" y="0" width="5" height="10" rx="2.5"/><path d="M1 7.5a5 5 0 0 0 10 0" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="5.3" y="12" width="1.4" height="3"/></svg>';
+const BARS='<span class="bars"><span></span><span></span><span></span><span></span><span></span><span></span></span>';
+const CH={none:{h:'Say:',c:'var(--say)',m:'on my way, two minutes'},party:{h:'Party:',c:'var(--party)',m:'pull in five'},raid:{h:'Raid:',c:'var(--raid)',m:'stack on the tank'},whisper:{h:'Tell Thrall:',c:'var(--whisper)',m:'got your invite, thanks'}};
+const S={state:'listen',style:'A',pillt:'hide',chan:'none'};
+
+function listening(style){
+  if(style==='A') return `<span class="pulse" style="color:#fff">${MIC}</span><span class="dim">Listening…</span>`;
+  if(style==='B') return `<span class="hdr" style="color:var(--say)">Say:</span><span style="color:#fff">${BARS}</span>`;
+  return `<span class="hdr" style="color:var(--say)">Say:</span><span class="caret"></span><span class="tip"><span class="pulse">${MIC}</span>Superwhisper listening</span>`;
+}
+function render(){
+  const e=document.getElementById('edit'),ch=CH[S.chan];
+  e.style.position='relative';
+  e.classList.toggle('hidden',S.state!=='listen');
+  e.innerHTML=S.state==='listen'?listening(S.style):'';
+  const lines=document.getElementById('lines');
+  lines.querySelector('.sent')?.remove();
+  if(S.state==='sent'){
+    const d=document.createElement('div');d.className='sent';d.style.color=ch.c;
+    d.textContent=S.chan==='none'?`[You] says: ${ch.m}`:S.chan==='whisper'?`To [Thrall]: ${ch.m}`:`[${ch.h.slice(0,-1)}] [You]: ${ch.m}`;
+    lines.appendChild(d);
+  }
+  document.getElementById('pill').classList.toggle('off',!(S.pillt==='show'&&S.state==='listen'));
+}
+document.querySelectorAll('.controls .seg').forEach(seg=>seg.addEventListener('click',ev=>{
+  const b=ev.target.closest('button');if(!b)return;
+  seg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  S[seg.id]=b.dataset.v;render();
+}));
+// Section 2 cards
+const desc={A:'A: native box, pulsing mic + "Listening…" replacing the header. <b>Default.</b>',B:'B: keeps the channel header, six-bar wave (echoes the Linux pill) where the text goes.',C:'C: normal empty box plus a small tooltip-style tag above it.'};
+document.getElementById('styles').innerHTML=['A','B','C'].map(s=>`<div class="card"><h3>Style ${s}</h3><div class="mini"><div class="chat"><div class="edit" style="position:relative;margin-top:${s==='C'?'34px':'0'}">${listening(s)}</div></div></div><p class="pick">${desc[s]}</p></div>`).join('');
+// Section 3 headers
+const H=[['Party:','--party','pull in five'],['Raid:','--raid','stack on the tank'],['Raid Warning:','--rw','spread out'],['Guild:','--guild','anyone selling linen?'],['Officer:','--officer','invites at eight'],['Say:','--say','hello there'],['Yell:','--yell','run!'],['Tell Thrall:','--whisper','got your invite'],['Tell Brenna: (reply)','--whisper','sure, on my way']];
+document.getElementById('hdrs').innerHTML=H.map(([h,c,m])=>`<div class="edit" style="margin-top:3px"><span class="hdr" style="color:var(${c})">${h}</span><span style="color:var(${c})">${m}</span></div>`).join('');
+render();
+</script>
+</body>
+</html>
