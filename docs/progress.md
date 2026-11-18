@@ -19,3 +19,5 @@ The installer copied the addon and companion into the local Forever installation
 ## Windows stage 1
 
 Source inspection confirmed that Windows saves recordings under Unix-second folders on release, writes modeName and the final results to meta.json, and writes the transcript to the clipboard even with Auto paste disabled. Capture the clipboard before recording and verify the completion belongs to the WoW mode. The companion never edits Superwhisper's configuration.
+
+On a hosted Windows desktop, the x64 companion observed push-to-talk, opened the binding on a foreground fixture named Wow.exe, pasted the completed recording, sent one Enter and restored the clipboard. Switching focus canceled delivery. The installer and uninstaller passed with a disposable game directory and the current user's sign-in registry entry. The [Windows run](https://github.com/superultrainc/superwhisper-wow/actions/runs/44386743802) includes the package and fixture screenshot. Real Superwhisper, in-game delivery and a fresh Windows sign-in remain untested.
