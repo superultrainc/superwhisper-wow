@@ -13,6 +13,7 @@ namespace SuperwhisperWoW {
         [DllImport("user32")] static extern IntPtr GetClipboardData(uint format);
         [DllImport("user32")] static extern IntPtr SetClipboardData(uint format, IntPtr data);
         [DllImport("user32")] internal static extern uint GetClipboardSequenceNumber();
+        [DllImport("user32")] static extern IntPtr GetClipboardOwner();
         [DllImport("ole32")] static extern IntPtr OleDuplicateData(IntPtr data, uint format, uint flags);
         [DllImport("kernel32")] static extern IntPtr GlobalAlloc(uint flags, UIntPtr size);
         [DllImport("kernel32")] static extern IntPtr GlobalLock(IntPtr memory);
@@ -81,16 +82,17 @@ namespace SuperwhisperWoW {
                 if (!EmptyClipboard()) return false;
                 if (SetClipboardData(13,memory) == IntPtr.Zero) { PutBack(); return false; }
                 memory = IntPtr.Zero;
-                installed = GetClipboardSequenceNumber();
                 owns = true;
                 return true;
             } finally {
                 CloseClipboard();
+                // Windows synthesizes additional formats on CloseClipboard, advancing the sequence.
+                if (owns) installed = GetClipboardSequenceNumber();
                 if (memory != IntPtr.Zero) GlobalFree(memory);
             }
         }
 
-        internal bool IsCurrent { get { return owns && GetClipboardSequenceNumber() == installed; } }
+        internal bool IsCurrent { get { return owns && GetClipboardOwner() == owner && GetClipboardSequenceNumber() == installed; } }
         void PutBack() {
             foreach (var format in new List<uint>(saved.Keys))
                 if (SetClipboardData(format,saved[format]) != IntPtr.Zero) saved.Remove(format);
