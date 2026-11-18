@@ -74,7 +74,7 @@ namespace SuperwhisperWoW {
         }
 
         bool Collision(int key, int mods) {
-            return (hold!=null && hold.Matches(key,mods)) || (toggle!=null && toggle.Matches(key,mods));
+            return (hold!=null && hold.MatchesInjected(key,mods)) || (toggle!=null && toggle.MatchesInjected(key,mods));
         }
 
         void Arm(IntPtr hwnd,long press,long ticks) {
