@@ -11,3 +11,11 @@ jobs:
       - name: Build and test the Windows companion
         shell: powershell
         run: ./windows/tests/unit.ps1
+      - name: Exercise the packaged executable against a foreground Wow.exe
+        shell: powershell
+        run: ./windows/tests/desktop.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-desktop-proof
+          path: windows/dist/proof/windows-chat.png
+          if-no-files-found: error
