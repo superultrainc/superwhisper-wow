@@ -14,6 +14,8 @@ import sys
 import tempfile
 import time
 
+from vocabulary import FOREVER, Vocabulary
+
 HERE = Path(__file__).resolve().parent
 RUNTIME = Path(os.environ["XDG_RUNTIME_DIR"])
 STATE = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "superwhisper-wow"
@@ -121,6 +123,8 @@ class Companion:
         self.wav = path / "hold.wav"
         self.target = self.recorder = self.session = None
         self.device = None
+        self.vocab = Vocabulary(STATE, sw)
+        self.next_scan = 0.0
 
     def enter(self, target):
         current = binds()
@@ -144,9 +148,12 @@ class Companion:
 
     def leave(self):
         self.target = self.session = None
-        if self.recorder:
-            self.stop_capture()
-        restore()
+        try:
+            if self.recorder:
+                self.stop_capture()
+            self.vocab.clear()
+        finally:
+            restore()
 
     def stop_capture(self):
         process, self.recorder = self.recorder, None
@@ -180,6 +187,13 @@ class Companion:
             self.session = sw("transcribe", str(self.wav))["session_id"]
 
     def tick(self):
+        if time.monotonic() >= self.next_scan:
+            self.next_scan = time.monotonic() + 1
+            try:
+                self.vocab.refresh(FOREVER / "Interface/AddOns/SuperwhisperWoW")
+            except (FileNotFoundError, ValueError):
+                # A reload can briefly leave the SavedVariables file incomplete.
+                pass
         if self.session is None:
             return
         status = sw("status")
@@ -245,6 +259,7 @@ def main():
         restore()
         with tempfile.TemporaryDirectory(dir=RUNTIME) as directory:
             app = Companion(Path(directory))
+            app.vocab.clear()
             signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
             try:
                 serve(app)

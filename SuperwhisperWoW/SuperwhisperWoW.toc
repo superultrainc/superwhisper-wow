@@ -5,3 +5,5 @@
 
 Routes.lua
 Chat.lua
+Core.lua
+Sync.lua

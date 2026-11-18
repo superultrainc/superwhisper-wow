@@ -7,3 +7,7 @@ Verified on goose using the Forever client, a virtual Right Alt press and releas
 ## Milestone 3
 
 The integrated build opened the approved Listening box on a virtual Right Alt press. A recorded utterance selected WoW's native whisper header and delivered the message to the same character. The self-whisper used a temporary speech replacement for the character name, removed after the check. The QA harness held Enter until the recipient was visually verified. F12 is the stock backpack key on Forever, so the companion uses Ctrl+Shift+F12. All nine channel prefixes passed Lua tests; only whisper was sent live.
+
+## Milestone 4
+
+Verified the addon's core terms in the installed Superwhisper vocabulary. After a self-whisper, /sww sync reloaded the UI, wrote one name to SavedVariables, and the live watcher added it while the game remained focused. Switching workspaces restored the original settings document exactly. Tests cover ownership, restart recovery and parsing. Guild, Battle.net and raid roster collection were not exercised with populated rosters.

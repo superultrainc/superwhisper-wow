@@ -13,6 +13,7 @@ class Delivery(unittest.TestCase):
         self.app = wow.Companion(Path(directory.name))
         self.app.target = ("0xabc", 42)
         self.app.session = 7
+        self.app.next_scan = float("inf")
 
     def finish(self, text, session=7, target=None):
         status = {"session_id": session, "phase": "idle", "last": {"text": text}}
