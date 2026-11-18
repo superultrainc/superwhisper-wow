@@ -6,9 +6,9 @@ Hold Right Alt to dictate one chat message in World of Warcraft Forever. The cha
 
 Install Superwhisper, select it as the Omarchy dictation provider, and configure Right Alt as its hold shortcut. This version supports the stock Omarchy press and release bindings on Hyprland with Lua configuration. It uses Python 3, PulseAudio's `parecord` and `wl-copy`.
 
-Run `./install.sh` from this checkout. The installer copies the addon into the Forever Wine prefix under `~/Games/battlenet` and prints the command to start the companion. For a different Forever installation, export `WOW_FOREVER_DIR` before installing and running.
+Run `./install.sh` from this checkout. The installer copies the addon into the Forever Wine prefix under `~/Games/battlenet` and enables and starts the systemd user service for your graphical session. For a different Forever installation, export `WOW_FOREVER_DIR` before installing.
 
-Enable **Superwhisper** in WoW's AddOns list and reload the UI. Under **Key Bindings → Superwhisper**, check that **Dictate chat** uses Ctrl+Shift+F12. The addon assigns Ctrl+Shift+F12 for the session if that key is free. Start the companion in your desktop session and leave it running. Ctrl+C stops it and restores dictation settings.
+Enable **Superwhisper** in WoW's AddOns list and reload the UI. Under **Key Bindings → Superwhisper**, check that **Dictate chat** uses Ctrl+Shift+F12. The addon assigns Ctrl+Shift+F12 for the session if that key is free. Use `systemctl --user status superwhisper-wow.service` to check the companion and `journalctl --user -fu superwhisper-wow.service` to follow its log. Delivery entries report key dispatch to the focused client. The journal includes the spoken channel prefix and omits message text and recipient names. To stop the companion and restore dictation settings, run `systemctl --user stop superwhisper-wow.service`.
 
 ## Speak a message
 
@@ -18,4 +18,4 @@ Type `/sww sync` in game to collect character names and reload the UI. The compa
 
 ## Development
 
-Run `make test` with Python 3 and Lua 5.1 installed. Run `make run` from a Hyprland desktop session to use the companion from the checkout.
+Run `make test` with Python 3 and Lua 5.1 installed. Stop the installed service before running `make run` from a Hyprland desktop session to use the companion from the checkout.

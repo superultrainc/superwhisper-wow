@@ -2,9 +2,12 @@
 import csv
 import tempfile
 import json
+import logging
 import os
 from pathlib import Path
 import re
+
+LOG = logging.getLogger("superwhisper-wow")
 
 DEFAULT_FOREVER = Path.home() / "Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_forever_"
 FOREVER = Path(os.environ.get("WOW_FOREVER_DIR", DEFAULT_FOREVER))
@@ -91,8 +94,12 @@ class Vocabulary:
             wanted.update(read_names(latest.read_text(encoding="utf-8-sig")))
         self.reconcile(wanted)
         self.signature = signature
+        LOG.info("Vocabulary loaded (%d requested, %d added by companion)", len(wanted), len(self.owned))
 
     def clear(self):
-        if self.owned:
+        count = len(self.owned)
+        if count:
             self.reconcile(set())
+        if count or self.signature is not None:
+            LOG.info("Vocabulary unloaded (%d tracked terms released)", count)
         self.signature = None
