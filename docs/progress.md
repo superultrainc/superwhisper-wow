@@ -11,3 +11,7 @@ The integrated build opened the approved Listening box on a virtual Right Alt pr
 ## Milestone 4
 
 Verified the addon's core terms in the installed Superwhisper vocabulary. After a self-whisper, /sww sync reloaded the UI, wrote one name to SavedVariables, and the live watcher added it while the game remained focused. Switching workspaces restored the original settings document exactly. Tests cover ownership, restart recovery and parsing. Guild, Battle.net and raid roster collection were not exercised with populated rosters.
+
+## Milestone 5
+
+The installer copied the addon and companion into the local Forever installation. Compared installed files with the checkout and used the installed copies for the in-game checks. A temporary prefix also passed the installer smoke test.

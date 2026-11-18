@@ -1,9 +1,0 @@
-local _, addon = ...
-addon.core = {
-    "Warrior", "Mage", "Warlock", "Priest", "Paladin", "Shaman", "Druid", "Rogue", "Hunter",
-    "Human", "Dwarf", "Gnome", "Night Elf", "Orc", "Troll", "Tauren", "Undead",
-    "Azeroth", "Kalimdor", "Durotar", "Elwynn Forest", "Stormwind", "Orgrimmar",
-    "Ironforge", "Thunder Bluff", "Darnassus", "Undercity",
-    "Deadmines", "Scarlet Monastery", "Blackrock Depths", "Molten Core", "Onyxia",
-    "LFG", "DPS", "tank", "heals", "OOM", "CC",
-}

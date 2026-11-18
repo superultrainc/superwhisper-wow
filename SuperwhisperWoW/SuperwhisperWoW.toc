@@ -1,9 +1,0 @@
-## Interface: 16001
-## Title: Superwhisper
-## Notes: Dictate into World of Warcraft chat.
-## SavedVariables: SuperwhisperWoWDB
-
-Routes.lua
-Chat.lua
-Core.lua
-Sync.lua

@@ -2,10 +2,12 @@
 import csv
 import tempfile
 import json
+import os
 from pathlib import Path
 import re
 
-FOREVER = Path.home() / "Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_forever_"
+DEFAULT_FOREVER = Path.home() / "Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_forever_"
+FOREVER = Path(os.environ.get("WOW_FOREVER_DIR", DEFAULT_FOREVER))
 TERM = r'"([^"\\\x00-\x1f]{1,128})"'
 ENTRY = re.compile(r"\s*(?:\[\d+\]\s*=\s*)?" + TERM + r"\s*[,;]?")
 COMMENTS = re.compile(r"--[^\n]*")
