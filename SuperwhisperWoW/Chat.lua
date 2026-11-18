@@ -57,9 +57,16 @@ function SuperwhisperWoW_Listen()
 end
 
 local events = CreateFrame("Frame")
-events:RegisterEvent("PLAYER_LOGIN")
-events:SetScript("OnEvent", function()
-    if not GetBindingKey("SWW_LISTEN") and GetBindingAction("CTRL-SHIFT-F12") == "" then
-        SetBinding("CTRL-SHIFT-F12", "SWW_LISTEN")
+events:RegisterEvent("PLAYER_ENTERING_WORLD")
+events:RegisterEvent("PLAYER_REGEN_ENABLED")
+events:SetScript("OnEvent", function(self)
+    if InCombatLockdown() then return end
+    local chord = "CTRL-SHIFT-F12"
+    local action = GetBindingAction(chord)
+    -- Account bindings can reload after login. Keep the companion chord session-local.
+    if not action or action == "" then
+        SetOverrideBinding(self, false, chord, "SWW_LISTEN")
+    else
+        ClearOverrideBindings(self)
     end
 end)
