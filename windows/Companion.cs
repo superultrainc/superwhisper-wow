@@ -9,6 +9,7 @@ using System.Windows.Forms;
 namespace SuperwhisperWoW {
     internal sealed class Companion : IDisposable {
         readonly string root;
+        readonly EventWaitHandle exit = new EventWaitHandle(false,EventResetMode.AutoReset,@"Local\SuperwhisperWoW.Exit");
         readonly Control queue = new Control();
         readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         readonly Desktop.Keyboard keyboard;
@@ -95,6 +96,7 @@ namespace SuperwhisperWoW {
         }
 
         void Tick() {
+            if (exit.WaitOne(0)) { Application.ExitThread(); return; }
             if (recording==null) {
                 if (!down && clock.ElapsedMilliseconds>=nextPrefs) LoadPrefs();
                 return;
@@ -139,6 +141,7 @@ namespace SuperwhisperWoW {
             if (hook!=IntPtr.Zero) Desktop.UnhookWindowsHookEx(hook);
             Cancel();
             timer.Dispose();
+            exit.Dispose();
             queue.Dispose();
         }
         [STAThread]
